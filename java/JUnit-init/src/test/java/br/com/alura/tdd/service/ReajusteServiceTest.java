@@ -1,11 +1,13 @@
 package br.com.alura.tdd.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import br.com.alura.tdd.modelo.Desempenho;
 import br.com.alura.tdd.modelo.Funcionario;
@@ -42,7 +44,17 @@ public class ReajusteServiceTest {
 		service.realizarReajuste(funcionario , Desempenho.OTIMO);
 		
 		
-		assertEquals(new BigDecimal("1200.00"), funcionario.getSalario());
+//		assertEquals(new BigDecimal("1200.00"), funcionario.getSalario());
+		
+//		assertThrows(IllegalArgumentException.class, () -> {
+//			assertEquals(new BigDecimal("1200.00"), funcionario.getSalario());
+//		});
+		assertThrows(IllegalArgumentException.class, new Executable() {
+
+			@Override
+			public void execute() throws Throwable {
+				assertEquals(new BigDecimal("1200.00"), funcionario.getSalario());
+			}} );
 	}
 
 }
