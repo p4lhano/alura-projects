@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dev.palhano.gerenciador.entitys.BD;
-import dev.palhano.gerenciador.entitys.Empresa;
 
 /**
  * Servlet implementation class NovaEmpresa
