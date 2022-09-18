@@ -17,6 +17,7 @@ public class BD {
 		s.setNome("Palhano");
 		Empresa g = new Empresa();
 		g.setNome("Google");
+		BD.lista.add(s);
 		BD.lista.add(g);
 	}
 	

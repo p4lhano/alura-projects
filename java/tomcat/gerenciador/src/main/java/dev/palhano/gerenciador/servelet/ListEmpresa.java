@@ -20,29 +20,13 @@ public class ListEmpresa extends HttpServlet {
        
    @Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	   System.out.println("listando empresa empresa");
+	   System.out.println("listando empresas");
 	   
 	   BD bd = new BD();
+	   	
+	   req.setAttribute("empresas", bd.getEmpresas());
 	   
-	   PrintWriter out = resp.getWriter(); // print Writer
-	   out.write("<!DOCTYPE html>\n"
-				+ "<html lang=\"en\">\n"
-				+ "<head>\n"
-				+ "    <meta charset=\"UTF-8\">\n"
-				+ "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n"
-				+ "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
-				+ "    <title>Hellow Word</title>\n"
-				+ "</head>\n"
-				+ "<body>\n"
-				+ "    <ul>\n");
-		bd.getEmpresas().forEach(e -> out.write("    <li>"+e.getNome()+"</li>\n"));		
-//				"    <li>"++"</li>\n";
-				
-		out.write("    </ul>\n"
-			+ "</body>\n"
-			+ "</html>");
-	   
-	   
+	   req.getRequestDispatcher("/listEmpresa.jsp").forward(req, resp);
 	   
    }
 

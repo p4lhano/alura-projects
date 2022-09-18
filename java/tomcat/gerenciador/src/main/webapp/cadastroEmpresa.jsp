@@ -1,6 +1,6 @@
 <!-- <!DOCTYPE html> -->
 <%
-	String nomeEmpresa = (String) request.getAttribute("nomeEmpresa");
+	String nomeEmpresaJSP = (String) request.getAttribute("nomeEmpresa");
 %>
 <html lang="en">
 <head>
@@ -11,7 +11,8 @@
 </head>
 <body>
 	
-	<h1>leu nova empresa <% out.println(nomeEmpresa); %></h1>
-	<h1>leu nova empresa <%= nomeEmpresa %></h1>
+	<h1>1 leu nova empresa Scriplet verboso: <% out.println(nomeEmpresaJSP); %></h1>
+	<h1>2 leu nova empresa Scriplet simplificado exibicao:<%= nomeEmpresaJSP %></h1>
+	<h1>2 leu nova empresa Expression Language: ${ nomeEmpresa } </h1>
 </body>
 </html>
