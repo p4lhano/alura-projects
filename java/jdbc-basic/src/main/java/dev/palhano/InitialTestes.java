@@ -2,6 +2,7 @@ package dev.palhano;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,11 +15,12 @@ public class InitialTestes {
 //		create database alura_projects;
 //		create user alura_user with encrypted password 'alura';
 //		grant all privileges on database alura to alura_user;
-		Connection conn = new ConnectionFactory().createConecction();
+		try(Connection conn = new ConnectionFactory().createConecction()){
 		
-		
-		Statement statement = conn.createStatement();
-		boolean isList = statement.execute("select * from produto;");
+		PreparedStatement statement = conn.prepareStatement("select * from produto;");
+//		boolean isList = statement.execute("select * from produto;");
+		boolean isList = statement.execute();
+
 		System.out.println("resultado de select é uma lista: " + isList );
 		
 //		ResultSet resultSet1 = statement.executeQuery("select * from produto;");
@@ -34,9 +36,7 @@ public class InitialTestes {
 								"\tNome="+nome+","+System.lineSeparator()+
 								"\tdescricao="+descricao+");");
 		}
-		
-		conn.close();
-			
+	}			
 			
 		
 		

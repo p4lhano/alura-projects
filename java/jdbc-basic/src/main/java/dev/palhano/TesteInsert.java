@@ -10,13 +10,17 @@ public class TesteInsert {
 		try {
 			Connection conn = new ConnectionFactory().createConecction();
 			Statement statement = conn.createStatement();
-			
-			boolean isList = statement.execute("delete from produto where name='Mouse';");
-			System.out.println("resultado de insert é uma lista: " + isList);
-			
-			int lineAftect = statement.getUpdateCount();
-			System.out.println("linhas afetadas Produto(total=" + lineAftect + ");");
-			
+
+			boolean isList = statement.execute("insert into produto(name,descricao) values ('Mouse','Mouse wireless');",
+					Statement.RETURN_GENERATED_KEYS);
+			System.out.println("resultado de insert é uma lista: " + isList);// executa e diz se é lista
+			ResultSet ids = statement.getGeneratedKeys();
+			System.out.println("resultado de insert keys: " + statement.getGeneratedKeys());// executa e diz se é lista
+
+			while (ids.next()) {
+				Integer id = ids.getInt(1);
+				System.out.println("Insert Produto(id=" + id + ");");
+			}
 
 			conn.close();
 		} catch (SQLException e) {

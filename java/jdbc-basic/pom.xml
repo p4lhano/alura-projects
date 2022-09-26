@@ -5,14 +5,22 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<dependencies>
-	
-	
+
+
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.5.0</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.mchange/c3p0 -->
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.5.5</version>
+		</dependency>
+
 
 	</dependencies>
 
