@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class TesteInsert {
 	public static void main(String[] args) {
 		try {
-			Connection conn = new ConnectionFactory().createConecction();
+			Connection conn = new ConnectionFactory().getConecction();
 			Statement statement = conn.createStatement();
 
 			boolean isList = statement.execute("insert into produto(name,descricao) values ('Mouse','Mouse wireless');",

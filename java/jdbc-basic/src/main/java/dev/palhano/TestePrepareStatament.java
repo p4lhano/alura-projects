@@ -9,7 +9,7 @@ import java.sql.Statement;
 public class TestePrepareStatament {
 	public static void main(String[] args) {
 		try {	
-			Connection conn = new ConnectionFactory().createConecction();
+			Connection conn = new ConnectionFactory().getConecction();
 			PreparedStatement prepareStatement = conn.prepareStatement(
 					"insert into produto(name,descricao) values ( ?, ?);",
 					Statement.RETURN_GENERATED_KEYS);

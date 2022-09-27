@@ -15,7 +15,7 @@ public class InitialTestes {
 //		create database alura_projects;
 //		create user alura_user with encrypted password 'alura';
 //		grant all privileges on database alura to alura_user;
-		try(Connection conn = new ConnectionFactory().createConecction()){
+		try(Connection conn = new ConnectionFactory().getConecction()){
 		
 		PreparedStatement statement = conn.prepareStatement("select * from produto;");
 //		boolean isList = statement.execute("select * from produto;");

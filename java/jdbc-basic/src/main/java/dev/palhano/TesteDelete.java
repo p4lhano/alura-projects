@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class TesteDelete {
 	public static void main(String[] args) {
 		try {
-			Connection conn = new ConnectionFactory().createConecction();
+			Connection conn = new ConnectionFactory().getConecction();
 			Statement statement = conn.createStatement();
 			
 			boolean isList = statement.execute("delete from produto where name='Mouse';");
