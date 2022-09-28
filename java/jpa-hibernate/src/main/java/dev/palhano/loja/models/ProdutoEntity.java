@@ -23,6 +23,14 @@ public class ProdutoEntity {/*
 	private Long id;
 	private String nome;
 	private String descricao;
+	public ProdutoEntity() {}
+	public ProdutoEntity(String nome, String descricao, Double preco, CategoriaEntity categoria) {
+		this.nome = nome;
+		this.descricao = descricao;
+		this.preco = preco;
+		this.categoria = categoria;
+	}
+
 	@Column(name = "valor")
 	private Double preco;
 	@ManyToOne()
