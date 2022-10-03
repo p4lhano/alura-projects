@@ -15,8 +15,9 @@ private EntityManager em;
 	}
 	
 	public List<TotalVendasPorProdutoEUltimaVendaDTO> totalVendasPorProdutoEUltimaVenda() {
+		
 		String jpsql =
-				"select new dev.palhano.loja.dao.dto.TotalVendasPorProdutoEUltimaVendaDTO("
+				"select new "+ TotalVendasPorProdutoEUltimaVendaDTO.class.getCanonicalName() +"("
 							+ "produto.nome, "
 							+ "sum(item.quant), "
 							+ "max(pedido.data)) "
