@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+    <title>Home - MUDI</title>
+  </head>
+  <body>
+    <div class="container">
+    
+    	<div class="p-5 mb-4 bg-light rounded-3 container-fluid py-5 display-5 fw-bold">Bem-vindo</div>
+    
+    	<nav class="navbar navbar-expand bg-light">
+	    	<div class="container-fluid">
+	    		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+	    			<ul class="navbar-nav">
+	    				<li class="nav-item">
+							<a class="nav-link active" href="#">Todos</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link active" href="#">Aguardando</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link active" href="#">Aprovando</a>
+						</li>
+					</ul>
+				</div>
+				<a href="/pedido/novo" class="text-decoration-none">
+					<button class="btn btn-outline-primary d-flex">Novo</button>
+				</a>
+	    	</div>
+    	</nav>
+    	
+		<div class="card m-3" th:each="pedido : ${pedidos}">
+			<div class="card-header" th:text="${pedido.nome}">Nome do Produto</div>
+			<div class="card-body row d-flex justify-content-between">
+					<div class="col-md-12 col-lg-6 mb-3">
+						<div class="row">
+							<p class="col-md-5">Valor: <span th:text="${#numbers.formatDecimal(pedido.valorNegociado, 1, 2)}">200,99</span></p>
+							<p class="col-md-7">Data Entrega: <span th:text="${#temporals.format(pedido.dataEntrega, 'dd/MM/yyyy')}">10/02/2022</span></p>
+						</div>
+
+						<p>Produto:</p>
+						<input
+							class="form-control"
+							th:value="${pedido.urlProduto}"
+							value="url://produto"
+						/>
+
+						<p>Descrição</p>
+						<div>
+							<textarea class="form-control" th:text="${pedido.descricao}" rows="3" cols="50" >descricao</textarea>
+						</div>
+					</div>
+					<div class="col-md-12 col-lg-4">
+						<img class="img-fluid" th:src="${pedido.urlImage}" />
+					</div>
+			</div>
+		</div>
+    </div>
+  </body>
+</html>
