@@ -1,19 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-      crossorigin="anonymous"
-    />
-<title>Cadastro de Pedido</title>
-</head>
+	  	<meta th:replace="~{fragments :: head}">
+	  	<title>Novo Produto - Mudi</title>
+	  </head>
 <body>
+	<nav th:replace="~{fragments :: logo}"></nav>
 	<div class="container">
     
-    	<div class="p-5 mb-4 bg-light rounded-3 container-fluid py-5 display-5 fw-bold">Cadastro de Pedido</div>
+    	<div th:replace="~{fragments :: jumbotron('Novo Pedido')}"></div>
     
 <!--     	<nav class="navbar navbar-expand bg-light"> -->
 <!-- 	    	<div class="container-fluid"> -->

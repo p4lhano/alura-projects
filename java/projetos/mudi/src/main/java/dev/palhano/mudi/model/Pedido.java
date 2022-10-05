@@ -3,10 +3,15 @@ package dev.palhano.mudi.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import dev.palhano.mudi.model.types.PedidoStatusEnum;
 
 @Entity
 public class Pedido {
@@ -19,6 +24,9 @@ public class Pedido {
 	private String urlProduto;
 	private String urlImage;
 	private String descricao;
+	@Column(length = 30, nullable = false) @Enumerated(EnumType.STRING)
+	private PedidoStatusEnum status = PedidoStatusEnum.AGUARDANDO;
+	
 	public String getNome() {
 		return nome;
 	}
@@ -54,5 +62,11 @@ public class Pedido {
 	}
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	public PedidoStatusEnum getStatus() {
+		return status;
+	}
+	public void setStatus(PedidoStatusEnum status) {
+		this.status = status;
 	}
 }

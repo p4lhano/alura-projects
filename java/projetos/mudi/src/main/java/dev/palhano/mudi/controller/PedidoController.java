@@ -18,9 +18,11 @@ import dev.palhano.mudi.repository.PedidoRepository;
 public class PedidoController {
 	
 	private final PedidoRepository pedidoRepository;
+	private final HomeController homeController;
 	
-	public PedidoController(PedidoRepository pedidoRepository) {
+	public PedidoController(PedidoRepository pedidoRepository,HomeController homeController) {
 		this.pedidoRepository = pedidoRepository;
+		this.homeController = homeController;
 	}
 	
 	
@@ -32,18 +34,18 @@ public class PedidoController {
 //		if (null == model.getAttribute("pedidoFormDto"))
 //			model.addAttribute(new PedidoFormDto());
 		
-		return "pedido/cadastro";
+		return "pedido/novo";
 	}
 	
 	@PostMapping(value = "novo")
 	public String saveByForm(@Validated PedidoFormDto pedidoFormDto,BindingResult result,Model model) {
 		System.err.println(result.hasErrors() + " -> " + pedidoFormDto);
-		if(result.hasErrors()) {
-			return "pedido/cadastro";
-		}
-//		model.addAttribute(pedidoFormDto);
+		
+		if(result.hasErrors())
+			return this.sendFormulario(pedidoFormDto);
+		
 		Pedido pedido = pedidoFormDto.toPedido();
 		pedidoRepository.save(pedido);
-		return "home";
+		return "redirect:/home";
 	}
 }
