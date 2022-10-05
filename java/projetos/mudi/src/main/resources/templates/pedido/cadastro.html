@@ -15,26 +15,53 @@
     
     	<div class="p-5 mb-4 bg-light rounded-3 container-fluid py-5 display-5 fw-bold">Cadastro de Pedido</div>
     
-    	<nav class="navbar navbar-expand bg-light">
-	    	<div class="container-fluid">
-	    		<div class="collapse navbar-collapse" id="navbarNavDropdown">
-	    			<ul class="navbar-nav">
-	    				<li class="nav-item">
-							<a class="nav-link active" href="#">Todos</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link active" href="#">Aguardando</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link active" href="#">Aprovando</a>
-						</li>
-					</ul>
+<!--     	<nav class="navbar navbar-expand bg-light"> -->
+<!-- 	    	<div class="container-fluid"> -->
+<!-- 	    		<div class="collapse navbar-collapse" id="navbarNavDropdown"> -->
+<!-- 	    			<ul class="navbar-nav"> -->
+<!-- 	    				<li class="nav-item"> -->
+<!-- 							<a class="nav-link active" href="#">Todos</a> -->
+<!-- 						</li> -->
+<!-- 						<li class="nav-item"> -->
+<!-- 							<a class="nav-link active" href="#">Aguardando</a> -->
+<!-- 						</li> -->
+<!-- 						<li class="nav-item"> -->
+<!-- 							<a class="nav-link active" href="#">Aprovando</a> -->
+<!-- 						</li> -->
+<!-- 					</ul> -->
+<!-- 				</div> -->
+<!-- 				<a href="/pedido/novo" class="text-decoration-none"> -->
+<!-- 					<button class="btn btn-outline-primary d-flex">Novo</button> -->
+<!-- 				</a> -->
+<!-- 	    	</div> -->
+<!--     	</nav> -->
+    	
+    	<section>
+    		<form th:object="${pedidoFormDto}" action="/pedido/novo" method="post" class="card p-3 col-7">
+				<div>
+<!-- 					<label for="nome" class="form-label">Nome Produto</label> -->
+					<input th:field="*{nome}" placeholder="Nome Produto" th:errorclass="is-invalid" class="form-control">
+					<small class="invalid-feedback" th:errors="*{nome}"></small>
 				</div>
-				<a href="/pedido/novo" class="text-decoration-none">
-					<button class="btn btn-outline-primary d-flex">Novo</button>
-				</a>
-	    	</div>
-    	</nav>
+				<div>
+					<label for="urlImage" class="form-label">URL Imagem</label>
+					<input th:field="*{urlImage}" name="urlImage" placeholder="Imagem do Produto" th:errorclass="is-invalid" class="form-control">
+					<small class="invalid-feedback" th:errors="*{urlImage}"></small>
+				</div>
+				<div>
+					<label for="urlProduto" class="form-label">URL Produto</label>
+					<input th:field="*{urlProduto}" name="urlProduto" placeholder="URL do produto" th:errorclass="is-invalid" class="form-control">
+					<small class="invalid-feedback" th:errors="*{urlProduto}"></small>
+				</div>
+				<div>
+					<label for="descricao"  class="form-label"></label>
+					<textarea th:field="*{descricao}" class="form-control" placeholder="Adicione detalhes importantes para ajudar o comprador"></textarea>
+				</div>
+				<button class="btn btn-success mt-2" type="submit">Salvar</button>
+    		</form>
+    	</section>
+    	
+    	
     </div>
 </body>
 </html>
