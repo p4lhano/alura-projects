@@ -1,5 +1,6 @@
 package dev.palhano.mudi.controller;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,19 +11,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import dev.palhano.mudi.model.Pedido;
+import dev.palhano.mudi.model.User;
 import dev.palhano.mudi.model.Dto.PedidoFormDto;
 import dev.palhano.mudi.repository.PedidoRepository;
+import dev.palhano.mudi.repository.UserRepository;
 
 @Controller
 @RequestMapping(value = "pedido")
 public class PedidoController {
 	
 	private final PedidoRepository pedidoRepository;
+	private final UserRepository userRepository;
 	private final HomeController homeController;
 	
-	public PedidoController(PedidoRepository pedidoRepository,HomeController homeController) {
+	public PedidoController(PedidoRepository pedidoRepository,HomeController homeController,UserRepository userRepository) {
 		this.pedidoRepository = pedidoRepository;
 		this.homeController = homeController;
+		this.userRepository = userRepository;
 	}
 	
 	
@@ -44,7 +49,14 @@ public class PedidoController {
 		if(result.hasErrors())
 			return this.sendFormulario(pedidoFormDto);
 		
+		String nomeUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		
 		Pedido pedido = pedidoFormDto.toPedido();
+		
+		User user = userRepository.findById(nomeUser).orElseThrow(() ->
+					new IllegalArgumentException("User: " + nomeUser + "Não encontrado!"));
+		
+		pedido.setUser(user);
 		pedidoRepository.save(pedido);
 		return "redirect:/home";
 	}

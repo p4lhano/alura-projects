@@ -7,9 +7,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import dev.palhano.mudi.model.types.PedidoStatusEnum;
 
@@ -26,6 +28,9 @@ public class Pedido {
 	private String descricao;
 	@Column(length = 30, nullable = false) @Enumerated(EnumType.STRING)
 	private PedidoStatusEnum status = PedidoStatusEnum.AGUARDANDO;
+	
+	@ManyToOne(fetch = FetchType.LAZY) 
+	private User user;
 	
 	public String getNome() {
 		return nome;
@@ -68,5 +73,8 @@ public class Pedido {
 	}
 	public void setStatus(PedidoStatusEnum status) {
 		this.status = status;
+	}
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

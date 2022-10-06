@@ -16,9 +16,14 @@
 		<a href="/home" class="navbar-brand fw-bold p-0 text-decoration-none"
 			style="font-family: 'Handlee'; font-size: 36px;">mudi</a>
 		<a
-			href="#" class="text-decoration-none">
+			sec:authorize="!isAuthenticated()"
+			href="/login" class="text-decoration-none">
 			<button class="btn navbar-text fw-bold">Login</button>
 		</a>
+		<form th:action="@{/logout}" method="post"
+			sec:authorize="isAuthenticated()" class="text-decoration-none">
+			<button class="btn navbar-text fw-bold" type="submit">Logout</button>
+		</form>
 	</div>
 </nav>
 
