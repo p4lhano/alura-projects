@@ -2,6 +2,7 @@ package dev.palhano.mudi.repository;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,6 +17,7 @@ import dev.palhano.mudi.model.types.PedidoStatusEnum;
 public interface PedidoRepository extends CrudRepository<Pedido, Long> {
 	List<Pedido> findByOrderByIdDesc();
 
+	@Cacheable("findByStatusAndUser")
 	List<Pedido> findByStatusAndUser(PedidoStatusEnum status,User username);
 
 	/**
@@ -24,5 +26,6 @@ public interface PedidoRepository extends CrudRepository<Pedido, Long> {
 	 * @param sort confure by org.springframework.data.domain.Sort
 	 * @param paginacao 
 	 * */
+	@Cacheable(cacheNames = "books",key = "#username.getUsername()")
 	List<Pedido> findByUser(User username, Pageable paginacao);
 }

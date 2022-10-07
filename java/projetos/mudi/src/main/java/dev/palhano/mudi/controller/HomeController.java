@@ -33,8 +33,8 @@ public class HomeController {
 		user.setUsername(principal.getName());
 
 //		List<Pedido> pedidos = pedidoRepository.findAll(Sort.by(Sort.Direction.ASC,"id"));
-		
-		List<Pedido> pedidos = pedidoRepository.findByOrderByIdDesc();
+		List<Pedido> pedidos;
+//		pedidos = pedidoRepository.findByOrderByIdDesc();
 		
 		Sort sort = Sort.by("dataEntrega").ascending();
 		PageRequest paginacao = PageRequest.of(0, 2,sort);
