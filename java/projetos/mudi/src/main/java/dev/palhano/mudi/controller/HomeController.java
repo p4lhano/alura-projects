@@ -19,7 +19,7 @@ import dev.palhano.mudi.model.types.PedidoStatusEnum;
 import dev.palhano.mudi.repository.PedidoRepository;
 
 @Controller
-@RequestMapping("/home")
+@RequestMapping(value = {"/home","/**"})
 public class HomeController {
 	private final PedidoRepository pedidoRepository;
 	public HomeController(PedidoRepository pedidoRepository) {
