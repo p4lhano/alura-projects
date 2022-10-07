@@ -3,9 +3,7 @@ package dev.palhano.mudi.repository;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +17,8 @@ public interface PedidoRepository extends CrudRepository<Pedido, Long> {
 
 	@Cacheable("findByStatusAndUser")
 	List<Pedido> findByStatusAndUser(PedidoStatusEnum status,User username);
+	
+	List<Pedido> findByStatus(PedidoStatusEnum status, Pageable paginacao);
 
 	/**
 	 * Irá fazer a query apenas em na table {@code Pedido} comparando o nome da chave no campo

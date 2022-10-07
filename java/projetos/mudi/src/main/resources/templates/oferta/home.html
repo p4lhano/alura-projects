@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	  <head>
+	  	<meta th:replace="~{fragments :: head}">
+	  	<title>Home - Mudi</title>
+	  </head>
+  <body onLoad="onLoad()">
+  	
+  	<nav th:replace="~{fragments :: logo}"></nav>
+  	  
+    <div class="container" id="ofertas">
+    
+    	<div th:replace="~{fragments :: jumbotron('Ofertas')}"></div>
+		<div class="card m-3" v-for="produto in produtos">
+			<div class="card-header pl-3 alert">{{ produto.nome }}</div>
+<!-- 			<div class="card-header pl-3 alert alert-info" th:text="${pedido.nome}">Nome do Produto</div> -->
+			<div class="card-body row d-flex justify-content-between">
+					<div class="col-md-12 col-lg-6 mb-3">
+						<div class="row">
+							
+							<label for="valorNegociado">Valor</label>
+							<input name="valorNegociado" type="number" class="col-md-5">
+<!-- 							<p class="col-md-5">Valor: <span>200,99</span></p> -->
+							
+							<label for="dataEntrega">Data Entrega</label>
+							<input name="dataEntrega" type="date" class="col-md-7">
+<!-- 							<p class="col-md-7">Data Entrega: <span>10/02/2022</span></p> -->
+						</div>
+
+						<p>Produto:</p>
+						<a class="btn btn-link text-truncate text-decoration-none text-dark form-control-plaintext border border-primary"
+							v-bind:href="produto.urlProduto" target="_blank" >{{produto.urlProduto}}</a>
+
+						<p>Descrição</p>
+						<div>
+							<textarea class="form-control" rows="3" cols="50" >{{produto.descricao}}</textarea>
+						</div>
+					</div>
+					<div class="col-md-12 col-lg-4">
+						<img class="img-fluid" v-bind:src="produto.urlImage" />
+					</div>
+			</div>
+		</div>
+    </div>
+   	<script src="https://cdn.jsdelivr.net/npm/vue@2.7.10/dist/vue.js"></script>
+   	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+    	function onLoad(){
+//     		ofertas
+    		var app = new Vue({
+    			el : '#ofertas',
+    			data :{
+    				produtos : []
+    			},
+    			mounted () {
+    				axios.get('http://localhost:8080/api/pedido/aguardando')
+    					.then(response => (this.produtos = response.data))
+    			}
+    		})
+    	}
+    </script>
+  </body>
+</html>
