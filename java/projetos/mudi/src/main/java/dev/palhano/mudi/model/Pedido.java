@@ -16,6 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import dev.palhano.mudi.model.types.PedidoStatusEnum;
 
 @Entity
@@ -32,10 +35,12 @@ public class Pedido {
 	@Column(length = 30, nullable = false) @Enumerated(EnumType.STRING)
 	private PedidoStatusEnum status = PedidoStatusEnum.AGUARDANDO;
 	
-	@ManyToOne(fetch = FetchType.LAZY) 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	private User user;
 	
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "pedido")
+	@JsonIgnore
 	List<Oferta> ofertas;
 	
 	public String getNome() {
@@ -85,5 +90,11 @@ public class Pedido {
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public Long getId() {
+		return id;
+	}
+	public User getUser() {
+		return user;
 	}
 }

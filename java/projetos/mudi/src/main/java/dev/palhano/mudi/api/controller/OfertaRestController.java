@@ -1,6 +1,9 @@
 package dev.palhano.mudi.api.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,8 +22,8 @@ public class OfertaRestController {
 	}
 	
 	@PostMapping
-	public Oferta createOferta(OfertaRequestNewDto ofertaRequestNew) {
-
+	public Oferta createOferta(@Valid @RequestBody OfertaRequestNewDto ofertaRequestNew) {
+		System.out.println(ofertaRequestNew);
 		Oferta oferta = ofertaRequestNew.toOferta();
 		
 		Pedido pedido = pedidoRepository.findById(ofertaRequestNew.getPedidoId())

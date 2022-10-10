@@ -11,30 +11,51 @@
     <div class="container" id="ofertas">
     
     	<div th:replace="~{fragments :: jumbotron('Ofertas')}"></div>
-		<div class="card m-3" v-for="produto in produtos">
-			<div class="card-header pl-3 alert">{{ produto.nome }}</div>
+		<div class="card my-3" v-for="produto in produtos">
+			<div class="card-header alert alert-warning m-0">{{ produto.nome }}</div>
 <!-- 			<div class="card-header pl-3 alert alert-info" th:text="${pedido.nome}">Nome do Produto</div> -->
-			<div class="card-body row d-flex justify-content-between">
+			<div class="card-body row d-flex justify-content-between" style="padding: 1rem 1rem 0;">
 					<div class="col-md-12 col-lg-6 mb-3">
-						<div class="row">
-							
-							<label for="valorNegociado">Valor</label>
-							<input name="valorNegociado" type="number" class="col-md-5">
-<!-- 							<p class="col-md-5">Valor: <span>200,99</span></p> -->
-							
-							<label for="dataEntrega">Data Entrega</label>
-							<input name="dataEntrega" type="date" class="col-md-7">
-<!-- 							<p class="col-md-7">Data Entrega: <span>10/02/2022</span></p> -->
-						</div>
+						
 
 						<p>Produto:</p>
 						<a class="btn btn-link text-truncate text-decoration-none text-dark form-control-plaintext border border-primary"
 							v-bind:href="produto.urlProduto" target="_blank" >{{produto.urlProduto}}</a>
 
-						<p>Descrição</p>
 						<div>
-							<textarea class="form-control" rows="3" cols="50" >{{produto.descricao}}</textarea>
+							<p>Descrição</p>
+							<textarea disabled class="form-control" rows="3" cols="60" >{{produto.descricao}}</textarea>
 						</div>
+						
+						<div class="row mt-3 d-flex justify-content-between">
+							<div class="col-auto">
+								<label class="col-md-2" for="valorNegociado">Valor</label>
+								<input name="valorNegociado" type="number" class="col-md-3 form-control my-2"
+									v-model="produto.valorNegociado" v-bind:class="{'is-invalid':produto.errors.valor!==''}">
+								<div class="invalid-feedback" v-if="produto.errors.valor">
+									{{produto.errors.valor}}
+								</div>
+							</div>
+							<div class="col-auto">
+								<label for="dataEntrega">Data Entrega</label>
+								<input name="dataEntrega" type="date" class="form-control my-2"
+									v-model="produto.dataEntrega" v-bind:class="{'is-invalid':produto.errors.dataEntrega!==''}">
+								<div class="invalid-feedback" v-if="produto.errors.dataEntrega">
+									{{produto.errors.dataEntrega}}
+								</div>
+							</div>
+<!-- 							<p class="col-md-7">Data Entrega: <span>10/02/2022</span></p> -->
+							
+							<div>
+								<p>Comentario para entrega</p>
+								<textarea class="form-control" rows="2" cols="60" v-model="produto.comentario" ></textarea>
+							</div>
+							<div class=" d-flex justify-content-end mt-2">
+								<button v-if="produto.ofertaEnviada" class="btn btn-info col-auto" disabled>Oferta Enviada</button>
+								<button v-else v-on:click="sendOfert(produto)" class="btn btn-secondary col-auto">Enviar Oferta</button>
+							</div>
+						</div>
+						
 					</div>
 					<div class="col-md-12 col-lg-4">
 						<img class="img-fluid" v-bind:src="produto.urlImage" />
@@ -54,9 +75,44 @@
     			},
     			mounted () {
     				axios.get('http://localhost:8080/api/pedido/aguardando')
-    					.then(response => (this.produtos = response.data))
+    					.then(response => {
+    							response.data.forEach(p => {
+    								p.ofertaEnviada=false,
+    								p.errors = {
+    										valor:'',
+    										dataEntrega:''
+    								}
+    							})
+    							this.produtos = response.data;
+    			})
+    			},
+    			methods: {
+    				sendOfert: function(produto){
+    					axios.post('http://localhost:8080/api/ofertas',{
+    						pedidoId: produto.id,
+    						valor: produto.valorNegociado,
+    						dataEntrega: produto.dataEntrega,
+    						comentario: produto.comentario
+    					})
+    						.then(response => {
+    							produto.ofertaEnviada=true
+    							produto.errors = {
+										valor:'',
+										dataEntrega:''
+								}
+    							
+    						})
+    						.catch(e =>
+								e.response.data.errors.forEach(er => {
+									console.log(er.field)
+									produto.errors[er.field] = er.defaultMessage;
+								})
+    						)
+    				}
     			}
     		})
+    		
+    		
     	}
     </script>
   </body>

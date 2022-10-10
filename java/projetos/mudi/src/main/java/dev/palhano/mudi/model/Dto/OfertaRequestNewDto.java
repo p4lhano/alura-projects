@@ -4,16 +4,22 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 import dev.palhano.mudi.model.Oferta;
 
 public class OfertaRequestNewDto {
 	
-	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	
+	@NotNull
 	private Long pedidoId;
-	
+	@NotNull
+	@Pattern(regexp = "^\\d+(\\.\\d+{2})?$")
 	private String valor;
-	
+	@NotNull
+	@Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$")
 	private String dataEntrega;
 	
 	private String comentario;
