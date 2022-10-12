@@ -20,8 +20,8 @@ public class TopicoMapper {
 	public List<TopicoDTO> toTopicoDTO(List<Topico> topicoList) {
 		return topicoList.stream()
 				.map(this::toTopicoDTO)
-				.toList()
-//				.collect(java.util.stream.Collectors.toList())
+//				.toList() // Disponivel apenas depois do java 11
+				.collect(java.util.stream.Collectors.toList())
 				;
 	}
 }
