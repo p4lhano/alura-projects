@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import dev.palhano.forum.alura.model.Topico;
 import dev.palhano.forum.alura.model.dto.TopicoDTO;
+import dev.palhano.forum.alura.model.dto.TopicoDetalhesDTO;
 import dev.palhano.forum.alura.model.dto.TopicoFormDTO;
 
 @Component
@@ -31,4 +32,9 @@ public class TopicoMapper {
 		topico.setId(null);
 		return topico;
 	}
+	
+	public TopicoDetalhesDTO toTopicoDetalhesDTO(Topico topico) {
+		return MODEL_MAPPER.map(topico, TopicoDetalhesDTO.class);
+	}
+	
 }

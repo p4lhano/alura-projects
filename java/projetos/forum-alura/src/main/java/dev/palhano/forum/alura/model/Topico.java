@@ -132,5 +132,10 @@ public class Topico {
 		return "Topico [id=" + id + ", titulo=" + titulo + ", mensagem=" + mensagem + ", dataCriacao=" + dataCriacao
 				+ ", status=" + status + ", autor=" + autor + ", curso=" + curso + ", respostas=" + respostas + "]";
 	}
+	
+	public String toStringLight() {
+		return "Topico [id=" + id + ", titulo=" + titulo + ", mensagem=" + mensagem + ", dataCriacao=" + dataCriacao
+				+ ", status=" + status + "]";
+	}
 
 }
