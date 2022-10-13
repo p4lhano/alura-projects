@@ -15,5 +15,7 @@ public interface TopicoRepository extends CrudRepository<Topico, Long> {
 	List<Topico> findAll();
 	
 	Page<Topico> findByCurso_Nome(String nome, Pageable pageable);
+
+	Page<Topico> findAll(Pageable pageable);
 	
 }

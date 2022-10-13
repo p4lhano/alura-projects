@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,13 +61,16 @@ public class TopicoController {
 		return topicoMapper.toTopicoDTO(list2);
 	}
 	@GetMapping("by")
-	public ResponseEntity<Page<TopicoDTO>> findByCoursesNames(@RequestParam(required = false) String nomeCurso,@RequestParam int pag,@RequestParam int quant,@RequestParam(required = false) String order ) {
-
-		
-		Pageable pageable = PageRequest.of(pag, quant,Sort.by(order).descending());
-		
-		Page<Topico> topicos = topicoRepository.findByCurso_Nome(nomeCurso,pageable);
-//		topicoMapper.toTopicoDTO(topicos);
+	public ResponseEntity<Page<TopicoDTO>> findByCoursesNames(@RequestParam(required = false) String nomeCurso,@PageableDefault(sort = "id", direction = Direction.ASC) Pageable pageable ) {
+		Page<Topico> topicos;
+//		http://localhost:8080/api/topicos/by?page=0&size=5&sort=id,desc
+//		http://localhost:8080/api/topicos/by?page=0&size=5&sort=id,desc
+//		Pageable pageable = PageRequest.of(pag, quant,Sort.by(order).descending());
+		if (nomeCurso == null) {
+			topicos = topicoRepository.findByCurso_Nome(nomeCurso,pageable);
+		} else {
+			topicos = topicoRepository.findAll(pageable);
+		} 
 		return ResponseEntity.ok(topicoMapper.toTopicoDTO(topicos));
 	}
 	
