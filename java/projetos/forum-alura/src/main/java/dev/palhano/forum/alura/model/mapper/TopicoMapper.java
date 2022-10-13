@@ -3,6 +3,7 @@ package dev.palhano.forum.alura.model.mapper;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import dev.palhano.forum.alura.model.Topico;
@@ -26,6 +27,10 @@ public class TopicoMapper {
 				.collect(java.util.stream.Collectors.toList())
 				;
 	}
+
+	public Page<TopicoDTO> toTopicoDTO(Page<Topico> topicos) {
+		return topicos.map(this::toTopicoDTO);
+	}
 	
 	public Topico toTopico(TopicoFormDTO topicoFormDTO) {
 		Topico topico = MODEL_MAPPER.map(topicoFormDTO, Topico.class);
@@ -36,5 +41,6 @@ public class TopicoMapper {
 	public TopicoDetalhesDTO toTopicoDetalhesDTO(Topico topico) {
 		return MODEL_MAPPER.map(topico, TopicoDetalhesDTO.class);
 	}
+
 	
 }

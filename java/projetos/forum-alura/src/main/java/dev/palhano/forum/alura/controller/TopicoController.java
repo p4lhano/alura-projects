@@ -1,7 +1,6 @@
 package dev.palhano.forum.alura.controller;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -9,6 +8,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +20,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import dev.palhano.forum.alura.config.validation.NotFoundException;
-import dev.palhano.forum.alura.model.Curso;
 import dev.palhano.forum.alura.model.Topico;
 import dev.palhano.forum.alura.model.dto.TopicoDTO;
 import dev.palhano.forum.alura.model.dto.TopicoDetalhesDTO;
@@ -50,16 +53,20 @@ public class TopicoController {
 
 	@GetMapping
 	public List<TopicoDTO> getListTopicos() {
-		Topico t1 = new Topico("Ajusta com algo", "mensagem", new Curso("Java", "Programação"));
-		Topico t2 = new Topico("Ajusta com algo", "mensagem", new Curso("Java", "Programação"));
-		
-		List<Topico> list = new ArrayList<>();
-		list.add(t1);
-		list.add(t2);
 		
 		List<Topico> list2 = topicoRepository.findAll();
 		System.out.println("Listou todos");
 		return topicoMapper.toTopicoDTO(list2);
+	}
+	@GetMapping("by")
+	public ResponseEntity<Page<TopicoDTO>> findByCoursesNames(@RequestParam(required = false) String nomeCurso,@RequestParam int pag,@RequestParam int quant,@RequestParam(required = false) String order ) {
+
+		
+		Pageable pageable = PageRequest.of(pag, quant,Sort.by(order).descending());
+		
+		Page<Topico> topicos = topicoRepository.findByCurso_Nome(nomeCurso,pageable);
+//		topicoMapper.toTopicoDTO(topicos);
+		return ResponseEntity.ok(topicoMapper.toTopicoDTO(topicos));
 	}
 	
 	@GetMapping("{id}")
@@ -115,6 +122,7 @@ public class TopicoController {
 			throw new NotFoundException("Id "+ id + " não existe cadastrado.");
 		}
 	}
+	
 	
 	
 }
