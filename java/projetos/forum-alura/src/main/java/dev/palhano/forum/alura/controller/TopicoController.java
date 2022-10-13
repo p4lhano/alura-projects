@@ -7,6 +7,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,13 +62,16 @@ public class TopicoController {
 		System.out.println("Listou todos");
 		return topicoMapper.toTopicoDTO(list2);
 	}
+	
 	@GetMapping("by")
-	public ResponseEntity<Page<TopicoDTO>> findByCoursesNames(@RequestParam(required = false) String nomeCurso,@PageableDefault(sort = "id", direction = Direction.ASC) Pageable pageable ) {
+	@Cacheable(value="findByCoursesNames")
+	public ResponseEntity<Page<TopicoDTO>> findByCoursesNames(@RequestParam(required = false) String nomeCurso,
+									@PageableDefault(sort = "id", direction = Direction.ASC) Pageable pageable ) {
 		Page<Topico> topicos;
 //		http://localhost:8080/api/topicos/by?page=0&size=5&sort=id,desc
 //		http://localhost:8080/api/topicos/by?page=0&size=5&sort=id,desc
 //		Pageable pageable = PageRequest.of(pag, quant,Sort.by(order).descending());
-		if (nomeCurso == null) {
+		if (nomeCurso != null) {
 			topicos = topicoRepository.findByCurso_Nome(nomeCurso,pageable);
 		} else {
 			topicos = topicoRepository.findAll(pageable);
@@ -91,6 +96,7 @@ public class TopicoController {
 	 * @exception org.postgresql.util.PSQLException em casos de não existir o Id do curso no banco
 	 * */
 	@PostMapping
+	@CacheEvict(value="findByCoursesNames",allEntries = true)
 	@Transactional
 	public ResponseEntity<TopicoDTO> createNew(@Valid @RequestBody TopicoFormDTO topicoForm,UriComponentsBuilder uriBuilder) {
 		
@@ -108,6 +114,7 @@ public class TopicoController {
 	 *  @apiNote teste depois com o update diretamente o repositpry, passando os paramentros
 	 * */
 	@PutMapping("{id}")
+	@CacheEvict(value="findByCoursesNames",allEntries = true)
 	@Transactional
 	public ResponseEntity<TopicoDTO> updateTopico(@PathVariable Long id,@Valid @RequestBody TopicoUpdateFormDTO topicoUpdate) {
 		Topico topico = topicoRepository.findById(id)
@@ -118,6 +125,7 @@ public class TopicoController {
 	}
 	
 	@DeleteMapping("{id}")
+	@CacheEvict(value="findByCoursesNames",allEntries = true)
 	@Transactional
 	public ResponseEntity<?> deleteTopico(@PathVariable Long id) {
 		try {
