@@ -33,12 +33,12 @@ public class AutenticacaoController {
 		UsernamePasswordAuthenticationToken dadaLogin = user.toDadaLogin();
 		
 		try {
-		Authentication authentication = authenticationManager.authenticate(dadaLogin);
-		String token = tokenService.generateToken(authentication);
-		
-		TokenDTO tokenDTO=new TokenDTO(token);
-		
-		return ResponseEntity.ok(tokenDTO);
+			Authentication authentication = authenticationManager.authenticate(dadaLogin);
+			String token = tokenService.generateToken(authentication);
+			
+			TokenDTO tokenDTO=new TokenDTO(token);
+			
+			return ResponseEntity.ok(tokenDTO);
 		} catch (AuthenticationException e) {
 			return ResponseEntity.badRequest()
 //					.body(e.getMessage())
