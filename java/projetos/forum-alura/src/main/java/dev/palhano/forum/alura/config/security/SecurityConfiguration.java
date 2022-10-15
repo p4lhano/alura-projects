@@ -3,6 +3,7 @@ package dev.palhano.forum.alura.config.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import dev.palhano.forum.alura.repository.UsuarioRepository;
 
+@Profile("prod")
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -40,6 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.POST,"/auth").permitAll()
 			.antMatchers(HttpMethod.GET,"/actuator/**").permitAll()
 			.antMatchers(HttpMethod.GET,"/api/actuator/**").permitAll()
+			.antMatchers(HttpMethod.DELETE,"/api/topicos/*").hasRole("MODERADOR") //no banco o nome deve haver o prefixo "ROLE_"
 			.anyRequest().authenticated()
 //			.and().formLogin()
 			.and().csrf().disable()
@@ -54,7 +57,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 	
 	public static void main(String[] args) {
-		String password = "vitor";
+		String password = "pedro";
 		System.out.println("Password \"" + password + "\" encoder: " + new BCryptPasswordEncoder().encode(password));
 	}
 	

@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +20,7 @@ import dev.palhano.forum.alura.config.security.TokenService;
 import dev.palhano.forum.alura.model.dto.TokenDTO;
 import dev.palhano.forum.alura.model.dto.UsuarioLoginForm;
 
+@Profile("prod")
 @RestController
 @RequestMapping("/auth")
 public class AutenticacaoController {
