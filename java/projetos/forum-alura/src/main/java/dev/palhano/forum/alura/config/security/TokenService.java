@@ -19,17 +19,19 @@ public class TokenService {
 	
 	@Value("${forum.jwt.secret}")
 	private String secret;
-	
+	/**
+	 * @param expireAtToken será setado com o valor que p token irá expirar
+	 * */
 	public String generateToken(Authentication authentication) {
 		Usuario user = (Usuario) authentication.getPrincipal();
 		Date now = new Date();
-		Date dateExpiration = new Date(now.getTime() + Long.parseLong(durationInMs));
+		Date expireAtToken = new Date(now.getTime() + Long.parseLong(durationInMs));
 		
 		return Jwts.builder()
 				.setIssuer("API Forum")
 				.setSubject(user.getId().toString())
 				.setIssuedAt(now)
-				.setExpiration(dateExpiration)
+				.setExpiration(expireAtToken)
 				.signWith(SignatureAlgorithm.HS256, secret)
 				.compact();
 	}
@@ -48,6 +50,11 @@ public class TokenService {
 		Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
 		
 		return Long.parseLong(claims.getSubject());
+	}
+	
+	public Date getExpireAt(String token) {
+		Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
+		return claims.getExpiration();
 	}
 
 }

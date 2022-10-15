@@ -1,5 +1,7 @@
 package dev.palhano.forum.alura.controller;
 
+import java.util.Date;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +30,15 @@ public class AutenticacaoController {
 	
 	@PostMapping
 	public ResponseEntity<TokenDTO> auth(@RequestBody @Valid UsuarioLoginForm user) {
-		System.out.println(user);
 		
 		UsernamePasswordAuthenticationToken dadaLogin = user.toDadaLogin();
 		
 		try {
+			
 			Authentication authentication = authenticationManager.authenticate(dadaLogin);
 			String token = tokenService.generateToken(authentication);
 			
-			TokenDTO tokenDTO=new TokenDTO(token);
+			TokenDTO tokenDTO=new TokenDTO(token,tokenService.getExpireAt(token));
 			
 			return ResponseEntity.ok(tokenDTO);
 		} catch (AuthenticationException e) {
