@@ -1,14 +1,7 @@
 package dev.palhano;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+
 import com.google.gson.Gson;
 
 import dev.palhano.models.Top250FilmsResponse;
