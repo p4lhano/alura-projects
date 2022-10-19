@@ -4,11 +4,15 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import dev.palhano.server.comands.ComandoC1;
-import dev.palhano.server.comands.ComandoC2;
+import dev.palhano.server.comands.ComandoC2Part1;
+import dev.palhano.server.comands.ComandoC2Part2;
 import dev.palhano.server.comands.ComandoC3;
-
+/**
+ * Design pattern - FrontController
+ * */
 public class TaskDestribuir implements Runnable {
 
 	private Socket socket;
@@ -42,8 +46,16 @@ public class TaskDestribuir implements Runnable {
 					break;
 				case "c2":
 					saidaForCliente.println("Confirmado "+msg);
-					ComandoC2 c2 = new ComandoC2(saidaForCliente);
-					threadsPool.execute(c2);
+					ComandoC2Part1 c2p1 = new ComandoC2Part1(saidaForCliente);
+					ComandoC2Part2 c2p2 = new ComandoC2Part2(saidaForCliente);
+					Future<String> future1 = threadsPool.submit(c2p1);
+					Future<String> future2 = threadsPool.submit(c2p2);
+					
+					threadsPool.submit(new TaskWaitResponseFuture(saidaForCliente,future1,future2));
+					
+					future1.get();
+					future2.get();
+					
 					break;
 				case "c3":
 					saidaForCliente.println("Confirmado "+msg);
