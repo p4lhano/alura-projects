@@ -3,6 +3,7 @@ package dev.palhano.server;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -18,11 +19,13 @@ public class TaskDestribuir implements Runnable {
 	private Socket socket;
 	private Server server;
 	private ExecutorService threadsPool;
+	private BlockingQueue<String> filaComandos;
 
-	public TaskDestribuir(Socket accept,Server server, ExecutorService threadsPool) {
+	public TaskDestribuir(Socket accept,Server server, ExecutorService threadsPool, BlockingQueue<String> filaComandos) {
 		this.socket = accept;
 		this.server = server;
 		this.threadsPool = threadsPool;
+		this.filaComandos = filaComandos;
 	}
 
 	@Override
@@ -53,14 +56,14 @@ public class TaskDestribuir implements Runnable {
 					
 					threadsPool.submit(new TaskWaitResponseFuture(saidaForCliente,future1,future2));
 					
-					future1.get();
-					future2.get();
-					
 					break;
 				case "c3":
-					saidaForCliente.println("Confirmado "+msg);
-					ComandoC3 c3 = new ComandoC3(saidaForCliente);
-					threadsPool.execute(c3);
+					saidaForCliente.println("Confirmado "+msg+". Add para fila.");
+					
+					this.filaComandos.put(msg);
+					
+//					ComandoC3 c3 = new ComandoC3(saidaForCliente);
+//					threadsPool.execute(c3);
 					break;
 				case "c9":
 					saidaForCliente.println("Confirmado "+msg);

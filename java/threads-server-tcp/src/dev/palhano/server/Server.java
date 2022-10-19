@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -27,11 +29,17 @@ public class Server {
 	 * */
 	private AtomicBoolean isRunAtomic = new AtomicBoolean(isRun);
 	
+	private BlockingQueue<String> filaComandos;
+	
 	public Server() {
 		try {
 			System.out.println("Iniciando server");
 			this.serverSocket = new ServerSocket(PORT_SERVER);
 			this.executorPool = Executors.newCachedThreadPool(new ThreadFactory());
+			
+			this.filaComandos = new ArrayBlockingQueue<>(3);
+			
+			this.runConsumers();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -44,15 +52,23 @@ public class Server {
 				System.out.println("Cliente aceito port: " + accept.getPort());
 				System.out.println("Cliente aceito portLocal: " + accept.getLocalPort());
 
-				TaskDestribuir task = new TaskDestribuir(accept, this,executorPool);
+				TaskDestribuir task = new TaskDestribuir(accept, this , this.executorPool, this.filaComandos);
 
 				executorPool.execute(task);
+				
 			} 
 		} catch (SocketException e) {
 			System.out.println("Desligamento encontrou isRun: "+isRun);
 		}
 	}
 
+	
+	private void runConsumers() {		
+		for (int i = 0; i < 2; i++) {
+			TaskConsumer consumer = new TaskConsumer(filaComandos);
+			this.executorPool.execute(consumer);
+		}	
+	}
 	
 	public void shutdown() throws Exception {
 		this.executorPool.shutdown();
