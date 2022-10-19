@@ -31,7 +31,7 @@ public class Server {
 		try {
 			System.out.println("Iniciando server");
 			this.serverSocket = new ServerSocket(PORT_SERVER);
-			this.executorPool = Executors.newCachedThreadPool();
+			this.executorPool = Executors.newCachedThreadPool(new ThreadFactory());
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -44,7 +44,7 @@ public class Server {
 				System.out.println("Cliente aceito port: " + accept.getPort());
 				System.out.println("Cliente aceito portLocal: " + accept.getLocalPort());
 
-				TaskDestribuir task = new TaskDestribuir(accept, this);
+				TaskDestribuir task = new TaskDestribuir(accept, this,executorPool);
 
 				executorPool.execute(task);
 			} 
