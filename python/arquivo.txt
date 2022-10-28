@@ -1,0 +1,4 @@
+arquivo linha 1
+arquivo linha 2
+
+arquivo linha 4
