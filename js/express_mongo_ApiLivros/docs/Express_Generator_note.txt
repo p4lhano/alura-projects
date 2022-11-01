@@ -1,0 +1,15 @@
+Express Generator
+npm install express-generator -g
+
+express olamundo
+
+iria criar a extrutura de pastas 
+olamundo
+|–bin/
+|–public/
+|–routes/
+|–views/
+|–app.js
+|–package.json
+
+Já tera uma rota  default para '/user'
