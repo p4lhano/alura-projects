@@ -1,0 +1,22 @@
+Por padrão o comportatamento do sequelize tentar deixar o nome no plural da palavra
+-Pessoa ele tentar deixar em Pessoas
+-Person ele tentar deixar em Peaple
+
+Pode haver confusão quando for trabalhar com palavras pt-BR, pois ele pode tentar pluralizar apenas colacando o sufixo 's'
+-Nivel ele tentar deixar em Nivels
+Mas o correto seria 'Niveis', para conrrigir pode ser informado já na criação o nome correto no plural: npx sequelize-cli model:create --name Niveis ...
+
+Tambem nas migrations geradas pode ser alterado o paramento para normaçlização especifica como esta escrito, no paramentro: 
+    sequelize.define('User', {
+    // ... (attributes)
+    }, {
+    freezeTableName: true
+    });
+
+Ou definir outro nome para a tabela:
+    sequelize.define('User', {
+    // ... (attributes)
+    }, {
+        tableName: 'Employees'
+    });
+
