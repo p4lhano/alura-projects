@@ -2,9 +2,12 @@ import livros from "../model/Livro.js";
 
 class LivroController {
     static listarLisbros = (req,res) => 
-        livros.find((err,livros) =>
-            res.status(200).json(livros)
-        )
+        livros
+            .find()
+            .populate('autor','nome')
+            .exec((err,livros) =>
+                res.status(200).json(livros)
+            )
 
     static cadatrarLivro = (req,res) => {
         let livro = new livros(req.body)
@@ -27,7 +30,9 @@ class LivroController {
     static busquePorID = (req,res) => {
         const {id} = req.params
 
-        livros.findById(id,(err,l) => {
+        livros.findById(id)
+        .populate('autor')
+        .exec((err,l) => {
             if (err) {
                 res.status(404).send({msg: `não encotrado ${err.message}`})
                 return
@@ -45,6 +50,14 @@ class LivroController {
                 return
             }
             res.status(200).send({msg:`${id} exclude`})
+        })
+    }
+
+    static listarPorEditora = (req,res) => {
+        const editor = req.query.editora
+
+        livros.find({'editora':editor},{},(err,result)=>{
+            res.status(200).send(result)
         })
     }
 }
