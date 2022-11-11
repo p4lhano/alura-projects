@@ -1,0 +1,16 @@
+### Find All
+GET http://localhost:3000/users
+
+### Find By 1
+GET http://localhost:3000/users/1
+
+### Create
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "nome": "Vitor",
+    "email": "vitor@v.com",
+    "login": "p4lhano",
+    "password": "senha123"
+}
