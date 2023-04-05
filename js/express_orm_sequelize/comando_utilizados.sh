@@ -31,6 +31,9 @@ ativo:boolean,\
 email:string,\
 role:string
 
+# Criar arquivo base para migration
+npx sequelize-cli migration:generate --name nome-da-migration
+
 # Rodar as migrations no banco
 npx sequelize-cli db:migrate
 
