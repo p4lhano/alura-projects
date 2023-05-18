@@ -28,21 +28,39 @@ public class PedidoAmqpConfiguration {
     public Queue createQueueDetalhePedido() {
         return QueueBuilder
                 .nonDurable("pagamento.detalhes-pedidos")
+                .deadLetterExchange("pagamento.dlx")
                 .build();
     }
     @Bean
-    public FanoutExchange fanoutExchange(){
+    public Queue queueDlqDetalhePedido() {
+        return QueueBuilder
+                .nonDurable("pagamento.detalhes-pedidos-dlq")
+                .build();
+    }
+    @Bean
+    public FanoutExchange fanoutExchange() {
         return ExchangeBuilder.fanoutExchange("pagamento.ex").build();
     }
     @Bean
-    public Binding binding(FanoutExchange fanoutExchange){
-        return BindingBuilder.bind(createQueueDetalhePedido())
-                .to(fanoutExchange);
+    public FanoutExchange deadLetterExchange() {
+        return ExchangeBuilder.fanoutExchange("pagamento.dlx").build();
     }
+    @Bean
+    public Binding bindingDetalhePagamentoPedido() {
+        return BindingBuilder.bind(createQueueDetalhePedido())
+                .to(fanoutExchange());
+    }
+    @Bean
+    public Binding bindingDlxPagamentoPedido() {
+        return BindingBuilder.bind(queueDlqDetalhePedido())
+                .to(deadLetterExchange());
+    }
+
     @Bean
     public ApplicationListener<ApplicationReadyEvent> inicializaAdmin(RabbitAdmin rabbitAdmin) {
         return event -> rabbitAdmin.initialize();
     }
+
     @Bean
     public RabbitAdmin createRabbitAdmin(ConnectionFactory conn) {
         return new RabbitAdmin(conn);
